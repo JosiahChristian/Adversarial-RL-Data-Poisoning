@@ -32,8 +32,16 @@ jobs:
             echo "commit_sha=${GITHUB_SHA}"
             echo "workflow_run_id=${GITHUB_RUN_ID}"
             echo "workflow_run_attempt=${GITHUB_RUN_ATTEMPT}"
+            echo "runner_os=${RUNNER_OS}"
+            echo "runner_arch=${RUNNER_ARCH}"
+            printf "python_version="
+            python -VV | tr '\n' ' '
+            echo
+            printf "platform="
+            python -c 'import platform; print(platform.platform())'
             echo
             sha256sum \
+              .github/workflows/research-baseline.yml \
               experiments/baseline_reward_poisoning.py \
               experiments/reward_poisoning_strength_sweep.py \
               results/baseline_reward_poisoning.csv \

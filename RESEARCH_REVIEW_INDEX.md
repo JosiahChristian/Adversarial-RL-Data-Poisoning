@@ -2,13 +2,15 @@
 
 This file is the **front door for independent review** of the Adversarial-RL-Data-Poisoning-Thesis evidence. Reviewers should inspect experiment code and tracked result artifacts before relying on README or interpretation documents.
 
-## Current reconciliation — read before broadening detector claims
+## Current reconciliation and quadrangulation — read before broadening detector claims
 
 - [`research/prequadrangulation_claim_reconciliation_2026-08-17.md`](research/prequadrangulation_claim_reconciliation_2026-08-17.md) — freezes the current detector-specific claim boundary after external-review adjudication.
 - [`research/seed_level_uncertainty_reproducibility_audit_2026-08-17.md`](research/seed_level_uncertainty_reproducibility_audit_2026-08-17.md) — distinguishes aggregate tracked results from the per-seed CSV evidence intentionally retained by CI.
 - [`research/strength_sweep_unit_of_analysis_audit_2026-08-17.md`](research/strength_sweep_unit_of_analysis_audit_2026-08-17.md) — records that the trained policy/seed is the scientific unit, deterministic evaluation episodes are repeated trajectories, and cross-strength AUC estimates are dependent because strengths reuse seeds and a common clean comparator.
+- [`research/genspark_closed_evidence_quadrangulation_adjudication_2026-08-17.md`](research/genspark_closed_evidence_quadrangulation_adjudication_2026-08-17.md) — preserves the admissible Genspark closed-evidence external review and convergent detector-specific verdicts.
+- [`research/research_claim_matrix_2026-08-17.md`](research/research_claim_matrix_2026-08-17.md) — current publication-safe research claim matrix after audit and quadrangulation.
 
-The current evidence supports a detector-specific subtle-regime failure in the toy environment. It does not establish universal subtle-poisoning undetectability or general poisoning detection capability.
+The current evidence supports a detector-specific low-strength failure in the toy environment. It does not establish universal low-strength detectability limits or general detection capability.
 
 ## Start here — executed baseline and falsification
 
@@ -28,7 +30,7 @@ The current evidence supports a detector-specific subtle-regime failure in the t
 - Repository: [`results/reward_poisoning_strength_sweep_summary.json`](results/reward_poisoning_strength_sweep_summary.json)
 - Raw: https://raw.githubusercontent.com/JosiahChristian/Adversarial-RL-Data-Poisoning-Thesis/main/results/reward_poisoning_strength_sweep_summary.json
 
-The current key falsification is that the first Q-margin detector is weak in low-strength poisoning regimes where policy-level success remains near clean behavior, while detector performance becomes strong mainly once poisoning is severe enough to cause obvious behavioral degradation. Treat the reported AUC values as descriptive point estimates unless a seed-level uncertainty analysis is supplied.
+The current key falsification is that the first Q-margin detector is weak in low-strength regimes where policy-level success remains near clean behavior, while detector performance becomes strong mainly once perturbation is severe enough to cause obvious behavioral degradation. Treat the reported AUC values as descriptive point estimates unless a seed-level uncertainty analysis is supplied.
 
 ## Claim and failure-mode documentation
 
@@ -58,7 +60,7 @@ The current key falsification is that the first Q-margin detector is weak in low
 - [`research/reproducibility_status.md`](research/reproducibility_status.md)
 - Raw: https://raw.githubusercontent.com/JosiahChristian/Adversarial-RL-Data-Poisoning-Thesis/main/research/reproducibility_status.md
 
-The root README documents the executed 11-state Q-learning configuration, seed partitions, poisoning strength/reward shift, frozen-threshold logic, and current CI guarantees. CI regenerates experiment evidence, verifies exact tracked JSON reproduction, retains per-seed CSV evidence as workflow artifacts for 90 days, and records provenance/environment hashes.
+The root README documents the executed 11-state Q-learning configuration, seed partitions, controlled reward-shift strength, frozen-threshold logic, and current CI guarantees. CI regenerates experiment evidence, verifies exact tracked JSON reproduction, retains per-seed CSV evidence as workflow artifacts for 90 days, and records provenance/environment hashes.
 
 - README raw: https://raw.githubusercontent.com/JosiahChristian/Adversarial-RL-Data-Poisoning-Thesis/main/README.md
 
@@ -76,17 +78,17 @@ A reviewer must distinguish deterministic computational reproducibility from ind
 
 ## Questions an independent reviewer should answer
 
-1. Does the detector identify poisoning or merely gross policy degradation?
+1. Does the detector identify the controlled training-data perturbation or merely gross policy degradation?
 2. Is calibration/test separation implemented correctly?
 3. Are held-out random seeds being over-described as distributional generalization?
-4. Are the subtle attack-strength regimes independently meaningful?
+4. Are the low-strength regimes independently meaningful?
 5. What simple baselines and negative controls are still missing?
 6. Is policy-level uncertainty handled appropriately?
-7. Is persistence after poisoning removal established? (currently no.)
-8. Is attack-mechanism transfer established? (currently no.)
+7. Is persistence after the perturbation is removed established? (currently no.)
+8. Is mechanism transfer established? (currently no.)
 9. Is migration to richer autonomous guidance justified before solving or rigorously falsifying subtle pre-failure detection?
-10. Could a rigorous negative result—failure of candidate detectors in subtle regimes—constitute the strongest defensible thesis contribution?
+10. Could a rigorous negative result—failure of candidate detectors in low-strength regimes—constitute the strongest defensible thesis contribution?
 
 ## Scope boundary
 
-This repository currently provides a toy-scale, reproducible simulated poisoning/detection baseline and a negative subtle-regime falsification result for the present Q-margin-style detector. It does not establish real autonomous-platform security, broad adversarial-RL robustness, universal subtle-poisoning undetectability, cross-domain transfer, or clinical relevance. Biomedical control is reserved only as a much-later independently specified simulated validation environment.
+This repository currently provides a toy-scale, reproducible controlled data-integrity/detection baseline and a negative low-strength falsification result for the present Q-margin-style detector. It does not establish real autonomous-platform security, broad adversarial-RL robustness, universal detectability limits, cross-domain transfer, or clinical relevance. Biomedical control is reserved only as a much-later independently specified simulated validation environment.

@@ -1,0 +1,20 @@
+{
+  "experiment": "reward_poisoning_strength_sweep",
+  "environment": "11-state simulated guidance task",
+  "training_algorithm": "tabular Q-learning",
+  "calibration_strength": 0.15,
+  "calibration_seeds": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19],
+  "held_out_seeds": [40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79],
+  "frozen_detector_threshold": 0.8445131510745894,
+  "strengths": [0.0, 0.025, 0.05, 0.1, 0.15, 0.2, 0.3],
+  "by_strength": {
+    "0.000": {"count": 40, "false_positive_count": 0, "clean_specificity": 1.0, "mean_success_rate": 1.0, "mean_steps": 10.0, "mean_trigger_wrong_way_rate": 0.0, "mean_trigger_margin": 0.9538082531250017},
+    "0.025": {"count": 40, "detected_count": 9, "frozen_threshold_recall": 0.225, "roc_auc_vs_clean": 0.425, "mean_success_rate": 1.0, "mean_steps": 10.0, "mean_trigger_wrong_way_rate": 0.0, "mean_trigger_margin": 0.9498663676771286},
+    "0.050": {"count": 40, "detected_count": 7, "frozen_threshold_recall": 0.175, "roc_auc_vs_clean": 0.425, "mean_success_rate": 1.0, "mean_steps": 10.0, "mean_trigger_wrong_way_rate": 0.0, "mean_trigger_margin": 0.998876263075903},
+    "0.100": {"count": 40, "detected_count": 10, "frozen_threshold_recall": 0.25, "roc_auc_vs_clean": 0.45, "mean_success_rate": 0.95, "mean_steps": 11.5, "mean_trigger_wrong_way_rate": 0.0375, "mean_trigger_margin": 1.0172626717169275},
+    "0.150": {"count": 40, "detected_count": 23, "frozen_threshold_recall": 0.575, "roc_auc_vs_clean": 0.675, "mean_success_rate": 0.475, "mean_steps": 25.75, "mean_trigger_wrong_way_rate": 0.325, "mean_trigger_margin": 0.07412927095255671},
+    "0.200": {"count": 40, "detected_count": 32, "frozen_threshold_recall": 0.8, "roc_auc_vs_clean": 0.8, "mean_success_rate": 0.225, "mean_steps": 33.25, "mean_trigger_wrong_way_rate": 0.5868055555555556, "mean_trigger_margin": -0.6373913986560419},
+    "0.300": {"count": 40, "detected_count": 40, "frozen_threshold_recall": 1.0, "roc_auc_vs_clean": 1.0, "mean_success_rate": 0.0, "mean_steps": 40.0, "mean_trigger_wrong_way_rate": 0.875, "mean_trigger_margin": -1.6869515538512867}
+  },
+  "interpretation_boundary": "The threshold is calibrated only at poisoning probability 0.15 and is frozen for the sweep. This experiment measures attack-strength sensitivity in the toy environment; it does not establish robustness in richer guidance systems."
+}

@@ -4,7 +4,9 @@ Computational research framework for studying adversarial data poisoning and ano
 
 ## Current Experimental Evidence
 
-The repository now contains an executed baseline rather than only a research plan.
+The repository contains executed experiments rather than only a research plan.
+
+### Baseline: fixed poisoning strength
 
 The first experiment uses a deterministic **11-state simulated guidance task** with **tabular Q-learning**. During training, a controlled poisoning mechanism corrupts a subset of rewards in a narrow trigger-state band so that some updates favor movement away from the goal.
 
@@ -21,7 +23,27 @@ Held-out result at poisoning probability `0.15`:
 [Experiment implementation](experiments/baseline_reward_poisoning.py)  
 [Tracked result summary](results/baseline_reward_poisoning_summary.json)
 
-These values establish only a **toy-scale reproducible baseline**. They do not demonstrate generalization to 6-DOF guidance, deployed autonomous systems, or biomedical control. The next research stages must test attack-strength sensitivity, alternative poisoning mechanisms, richer policy classes, distribution shift, and more realistic dynamical environments.
+### Falsification: frozen-threshold attack-strength sweep
+
+A second experiment freezes the detector threshold calibrated at poisoning probability `0.15` and evaluates **40 new held-out seeds (`40-79`) per strength** without retuning. This exposes an important limitation that the single-strength baseline does not show.
+
+| Poison probability | Detector recall | ROC AUC vs clean | Policy success rate |
+|---:|---:|---:|---:|
+| 0.025 | 0.225 | 0.425 | 1.000 |
+| 0.050 | 0.175 | 0.425 | 1.000 |
+| 0.100 | 0.250 | 0.450 | 0.950 |
+| 0.150 | 0.575 | 0.675 | 0.475 |
+| 0.200 | 0.800 | 0.800 | 0.225 |
+| 0.300 | 1.000 | 1.000 | 0.000 |
+
+The clean held-out condition produced **1.000 specificity**. The detector therefore becomes reliable only as poisoning becomes strong enough to substantially damage policy behavior. At the subtle strengths most relevant to early detection (`0.025-0.10`), the frozen detector performs poorly and is near or below chance by ROC AUC.
+
+That is a **negative but valuable result**: the current Q-margin detector does not yet solve the difficult part of the thesis problem. It detects severe poisoning much better than subtle poisoning.
+
+[Strength-sweep implementation](experiments/reward_poisoning_strength_sweep.py)  
+[Tracked strength-sweep summary](results/reward_poisoning_strength_sweep_summary.json)
+
+These experiments establish only a **toy-scale reproducible baseline and its first falsification result**. They do not demonstrate generalization to 6-DOF guidance, deployed autonomous systems, or biomedical control. The next research stages must investigate alternative poisoning mechanisms and earlier/more sensitive anomaly features rather than optimizing only for the already-easy severe-poisoning regime.
 
 ## Research Objective
 
@@ -86,28 +108,29 @@ Where possible, the experiment should be designed so that the hypothesis can fai
 
 ## Reproducibility
 
-The baseline experiment is implemented with the Python standard library and records its seed split, attack probability, detector feature, calibrated threshold, and held-out metrics.
+The experiments are implemented with the Python standard library and record seed splits, attack strengths, detector features, calibration thresholds, and held-out metrics.
 
-Run it with:
+Run them with:
 
 ```bash
 python experiments/baseline_reward_poisoning.py
+python experiments/reward_poisoning_strength_sweep.py
 ```
 
-GitHub Actions reruns the deterministic experiment and verifies that the tracked result summary is reproduced exactly.
+GitHub Actions reruns the deterministic baseline, verifies its tracked summary, and executes the held-out strength sweep as a research artifact.
 
 ## Research Progression
 
 The current baseline is intentionally narrow. Planned progression is:
 
-1. establish clean and poisoned tabular-RL behavior
-2. vary poisoning strength and mechanism
-3. test detector robustness across larger seed populations
-4. introduce held-out environment and dynamics changes
-5. move from the 1-D baseline to richer autonomous-guidance simulation
-6. test persistence after poisoning influence is removed
-7. compare alternative anomaly features and detectors
-8. connect findings to the broader adaptive-system research program
+1. establish clean and poisoned tabular-RL behavior — **complete**
+2. vary poisoning strength without detector retuning — **complete; exposes weak subtle-poisoning detection**
+3. compare alternative poisoning mechanisms and anomaly features
+4. test detector robustness across larger seed populations and threshold choices
+5. introduce held-out environment and dynamics changes
+6. move from the 1-D baseline to richer autonomous-guidance simulation
+7. test persistence after poisoning influence is removed
+8. connect surviving findings to the broader adaptive-system research program
 9. only much later, if scientifically justified, test whether a surviving phenomenon independently appears in a carefully bounded simulated biomedical-control environment
 
 Biomedical control is a **validation environment**, not a clinical claim. No medical or clinical applicability should be inferred from simulated cross-domain experiments.
@@ -116,7 +139,7 @@ Biomedical control is a **validation environment**, not a clinical claim. No med
 
 **Active experimental research development.**
 
-The first reproducible poisoning/detection baseline is complete, but the repository should not be interpreted as evidence that adversarial data poisoning in reinforcement-learning guidance systems has been solved. Conclusions will be narrowed or revised as stronger experiments, robustness checks, and falsification studies accumulate.
+The first reproducible poisoning/detection baseline and attack-strength falsification sweep are complete. The current evidence specifically shows that the first detector is inadequate for subtle poisoning, so the repository should not be interpreted as evidence that adversarial data poisoning in reinforcement-learning guidance systems has been solved.
 
 ## Related Research and Software
 

@@ -1,0 +1,24 @@
+name: Research baseline
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  baseline:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Run deterministic poisoning experiment
+        run: python experiments/baseline_reward_poisoning.py
+      - name: Verify tracked summary is reproducible
+        run: git diff --exit-code -- results/baseline_reward_poisoning_summary.json

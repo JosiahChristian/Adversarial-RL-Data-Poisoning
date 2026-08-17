@@ -6,6 +6,7 @@ This file is the **front door for independent review** of the Adversarial-RL-Dat
 
 - [`research/prequadrangulation_claim_reconciliation_2026-08-17.md`](research/prequadrangulation_claim_reconciliation_2026-08-17.md) — freezes the current detector-specific claim boundary after external-review adjudication.
 - [`research/seed_level_uncertainty_reproducibility_audit_2026-08-17.md`](research/seed_level_uncertainty_reproducibility_audit_2026-08-17.md) — distinguishes aggregate tracked results from the per-seed CSV evidence intentionally retained by CI.
+- [`research/strength_sweep_unit_of_analysis_audit_2026-08-17.md`](research/strength_sweep_unit_of_analysis_audit_2026-08-17.md) — records that the trained policy/seed is the scientific unit, deterministic evaluation episodes are repeated trajectories, and cross-strength AUC estimates are dependent because strengths reuse seeds and a common clean comparator.
 
 The current evidence supports a detector-specific subtle-regime failure in the toy environment. It does not establish universal subtle-poisoning undetectability or general poisoning detection capability.
 
@@ -61,7 +62,7 @@ The root README documents the executed 11-state Q-learning configuration, seed p
 
 - README raw: https://raw.githubusercontent.com/JosiahChristian/Adversarial-RL-Data-Poisoning-Thesis/main/README.md
 
-A reviewer must distinguish deterministic computational reproducibility from independent scientific replication or distribution-shift generalization. Exact AUC uncertainty is not recoverable from the tracked aggregate JSON alone, but the configured CI artifact may preserve the required per-seed evidence without a new scientific experiment.
+A reviewer must distinguish deterministic computational reproducibility from independent scientific replication or distribution-shift generalization. Exact AUC uncertainty is not recoverable from the tracked aggregate JSON alone, but the configured CI artifact may preserve the required per-seed evidence without a new scientific experiment. Any inferential analysis should treat the 40 trained policies/seeds per strength as the sampling units and preserve repeated-seed/common-control dependence across strengths.
 
 ## Faculty/reviewer framing
 

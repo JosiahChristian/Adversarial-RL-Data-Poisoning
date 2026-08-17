@@ -18,7 +18,16 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: '3.12'
-      - name: Run deterministic poisoning experiment
+      - name: Run deterministic poisoning baseline
         run: python experiments/baseline_reward_poisoning.py
-      - name: Verify tracked summary is reproducible
+      - name: Verify tracked baseline summary is reproducible
         run: git diff --exit-code -- results/baseline_reward_poisoning_summary.json
+      - name: Run held-out poisoning-strength sweep
+        run: python experiments/reward_poisoning_strength_sweep.py
+      - name: Upload strength-sweep evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: reward-poisoning-strength-sweep
+          path: |
+            results/reward_poisoning_strength_sweep.csv
+            results/reward_poisoning_strength_sweep_summary.json

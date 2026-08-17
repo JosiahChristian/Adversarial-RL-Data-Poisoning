@@ -6,6 +6,10 @@
 
 Translate the reconciled external review, reproducibility audit, unit-of-analysis audit, and closed-evidence quadrangulation into manuscript-facing claim boundaries.
 
+## Cross-repository non-conflation rule
+
+The findings in this repository must be interpreted independently of the Adaptive-Digital-Twin-Framework results. Similar vocabulary such as poisoning, pre-failure/pre-decision evaluation, ranking/decision effects, or detector limitations does **not** constitute evidence of a shared causal mechanism, cross-domain replication, or general law. ADT findings may motivate separate hypotheses, but they must not be used as corroborating evidence for this thesis unless a separately specified validation study directly tests that relationship.
+
 ## Abstract — proposed boundaries
 
 ### Permitted core result
@@ -19,7 +23,8 @@ Translate the reconciled external review, reproducibility audit, unit-of-analysi
 - that 200 deterministic evaluation episodes per policy constitute 200 independent policy samples;
 - that held-out random seeds establish distribution-shift generalization;
 - that high AUC at severe poisoning demonstrates successful pre-failure detection;
-- that the current evidence establishes deployment-ready poisoning detection.
+- that the current evidence establishes deployment-ready poisoning detection;
+- that ADT results independently corroborate this detector result or establish cross-domain replication.
 
 ## Results — strength sweep
 
@@ -56,6 +61,8 @@ The Discussion should distinguish:
 
 The detector should be described accurately as a trigger-state Q-value-margin detector, not as a generic trajectory reward-distribution anomaly detector.
 
+Any discussion of ADT should be contextual only. It must not imply mechanistic triangulation, statistical pooling, shared causal structure, or independent replication of this thesis result.
+
 ## Negative result as contribution
 
 A defensible negative contribution is:
@@ -70,4 +77,4 @@ This wording is useful only if the manuscript preserves the limitations rather t
 
 ## Publication-readiness consequence
 
-The closed-evidence adjudication supports **READY AFTER DOCUMENTATION CORRECTION** only for the detector- and environment-specific negative claim. Recovery of the existing per-seed CI artifact and seed-appropriate uncertainty analysis would strengthen reporting without constituting a new scientific experiment. New experiments are required for broader claims about general poisoning detectability, attack-mechanism transfer, persistence, richer guidance environments, or universal pre-failure difficulty.
+The closed-evidence adjudication supports **READY AFTER DOCUMENTATION CORRECTION** only for the detector- and environment-specific negative claim. Recovery of the existing per-seed CI artifact and seed-appropriate uncertainty analysis would strengthen reporting without constituting a new scientific experiment. New experiments are required for broader claims about general poisoning detectability, attack-mechanism transfer, persistence, richer guidance environments, cross-repository generalization, or universal pre-failure difficulty.

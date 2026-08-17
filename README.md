@@ -108,16 +108,46 @@ Where possible, the experiment should be designed so that the hypothesis can fai
 
 ## Reproducibility
 
-The experiments are implemented with the Python standard library and record seed splits, attack strengths, detector features, calibration thresholds, and held-out metrics.
+The current baseline experiments use the Python standard library and are deterministic for a fixed seed and source revision.
 
-Run them with:
+### Current baseline configuration
+
+The authoritative configuration remains the experiment source code, but the executed baseline currently uses:
+
+- state space: **11 discrete states**, start state `10`, goal state `0`
+- actions: `-1` toward the goal and `+1` away from the goal
+- trigger states: `{4, 5, 6}`
+- Q-learning learning rate (`alpha`): `0.25`
+- discount factor (`gamma`): `0.95`
+- epsilon-greedy exploration rate: `0.15`
+- training episodes per policy: `2000`
+- maximum training/evaluation horizon: `40` steps per episode
+- deterministic evaluation episodes per policy: `200`
+- baseline poisoning probability: `0.15`
+- poisoned reward shift in trigger states: `+2.5` for moving away from the goal and `-2.5` for moving toward it when poisoning is applied
+- baseline calibration seeds: `0-19`
+- baseline held-out seeds: `20-39`
+- attack-strength sweep held-out seeds: `40-79`
+- sweep poisoning probabilities: `0.0, 0.025, 0.05, 0.10, 0.15, 0.20, 0.30`
+
+The detector threshold is learned only from the calibration population and is then frozen for held-out evaluation. Any change to these parameters constitutes a changed experimental condition and should generate fresh evidence rather than being treated as directly interchangeable with the tracked baseline.
+
+Run the current experiments with:
 
 ```bash
 python experiments/baseline_reward_poisoning.py
 python experiments/reward_poisoning_strength_sweep.py
 ```
 
-GitHub Actions reruns the deterministic baseline, verifies its tracked summary, and executes the held-out strength sweep as a research artifact.
+GitHub Actions currently:
+
+- compiles and structurally validates the research-critical Python and evidence files;
+- reruns both deterministic experiment programs;
+- verifies that both tracked JSON summaries exactly reproduce from the current source;
+- retains the per-seed baseline and strength-sweep CSV outputs together with the summaries as a CI evidence artifact;
+- records the producing Git commit, workflow run metadata, runner/Python environment, and SHA-256 hashes of the workflow, experiment scripts, and generated evidence files in an evidence-provenance manifest.
+
+The tracked summaries are concise claim-facing artifacts; the per-seed CSVs are preserved in CI so later uncertainty, resampling, and failure-case analyses can be performed without reconstructing aggregate results.
 
 ## Research Progression
 

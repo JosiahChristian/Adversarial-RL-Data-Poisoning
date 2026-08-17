@@ -26,6 +26,21 @@ jobs:
         run: python experiments/reward_poisoning_strength_sweep.py
       - name: Verify tracked strength-sweep summary is reproducible
         run: git diff --exit-code -- results/reward_poisoning_strength_sweep_summary.json
+      - name: Build evidence provenance manifest
+        run: |
+          {
+            echo "commit_sha=${GITHUB_SHA}"
+            echo "workflow_run_id=${GITHUB_RUN_ID}"
+            echo "workflow_run_attempt=${GITHUB_RUN_ATTEMPT}"
+            echo
+            sha256sum \
+              experiments/baseline_reward_poisoning.py \
+              experiments/reward_poisoning_strength_sweep.py \
+              results/baseline_reward_poisoning.csv \
+              results/baseline_reward_poisoning_summary.json \
+              results/reward_poisoning_strength_sweep.csv \
+              results/reward_poisoning_strength_sweep_summary.json
+          } > results/evidence_provenance.txt
       - name: Upload complete research evidence
         uses: actions/upload-artifact@v4
         with:
@@ -36,3 +51,4 @@ jobs:
             results/baseline_reward_poisoning_summary.json
             results/reward_poisoning_strength_sweep.csv
             results/reward_poisoning_strength_sweep_summary.json
+            results/evidence_provenance.txt

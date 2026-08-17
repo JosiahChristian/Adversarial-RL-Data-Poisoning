@@ -26,10 +26,13 @@ jobs:
         run: python experiments/reward_poisoning_strength_sweep.py
       - name: Verify tracked strength-sweep summary is reproducible
         run: git diff --exit-code -- results/reward_poisoning_strength_sweep_summary.json
-      - name: Upload strength-sweep evidence
+      - name: Upload complete research evidence
         uses: actions/upload-artifact@v4
         with:
-          name: reward-poisoning-strength-sweep
+          name: adversarial-rl-baseline-evidence
+          retention-days: 90
           path: |
+            results/baseline_reward_poisoning.csv
+            results/baseline_reward_poisoning_summary.json
             results/reward_poisoning_strength_sweep.csv
             results/reward_poisoning_strength_sweep_summary.json

@@ -1,0 +1,46 @@
+{
+  "schema": "manuscript-source-map-v1",
+  "generated_for": "review/manuscript-claim-reconciliation-2026-08-17",
+  "strength_sweep": {
+    "source": "results/reward_poisoning_strength_sweep_summary.json",
+    "fields": {
+      "environment": "environment",
+      "training_algorithm": "training_algorithm",
+      "calibration_strength": "calibration_strength",
+      "calibration_seeds": "calibration_seeds",
+      "held_out_seeds": "held_out_seeds",
+      "frozen_detector_threshold": "frozen_detector_threshold",
+      "policy_count": "by_strength.<strength>.count",
+      "recall": "by_strength.<strength>.frozen_threshold_recall",
+      "roc_auc_vs_clean": "by_strength.<strength>.roc_auc_vs_clean",
+      "deterministic_task_completion": "by_strength.<strength>.mean_success_rate"
+    },
+    "interpretation_override": {
+      "deterministic_task_completion": "Under the audited deterministic evaluation, mean_success_rate is primarily the fraction of trained policies/seeds completing the task, not within-policy stochastic reliability."
+    }
+  },
+  "unit_of_analysis": {
+    "source": "research/strength_sweep_unit_of_analysis_audit_2026-08-17.md",
+    "rule": "trained policy/seed is the inferential unit; 200 deterministic episodes are repeated executions",
+    "cross_strength_dependence": "same held-out seeds and common clean comparator are reused across strengths"
+  },
+  "uncertainty": {
+    "source": "research/seed_level_uncertainty_reproducibility_audit_2026-08-17.md",
+    "status": "aggregate JSON supports descriptive point estimates; exact seed-level AUC uncertainty requires retained CI evidence or provenance-preserving deterministic regeneration"
+  },
+  "plot_sources": {
+    "aggregate_strength_sweep": "research/manuscript/plot_strength_sweep.py"
+  },
+  "claim_governance": {
+    "research_claim_matrix": "research/research_claim_matrix_2026-08-17.md",
+    "manuscript": "research/manuscript/manuscript.md",
+    "submission_readiness_audit": "research/manuscript/submission_readiness_audit_2026-08-17.md",
+    "closed_evidence_review": "research/genspark_closed_evidence_quadrangulation_adjudication_2026-08-17.md"
+  },
+  "visual_restrictions": [
+    "Do not treat 200 deterministic episodes as independent samples.",
+    "Do not claim statistical equivalence to chance from AUC point estimates alone.",
+    "Do not present high-strength discrimination as early detection when task completion has already degraded substantially.",
+    "Do not generalize failure of this detector into universal subtle-poisoning impossibility."
+  ]
+}

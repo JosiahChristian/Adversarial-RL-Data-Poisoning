@@ -1,4 +1,4 @@
-# Adversarial-RL-Data-Poisoning-Thesis
+# Adversarial-RL-Data-Poisoning
 
 Controlled simulation research on reward poisoning and anomaly detection in reinforcement-learning guidance.
 

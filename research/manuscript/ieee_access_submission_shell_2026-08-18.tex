@@ -1,75 +1,105 @@
-% Venue-specific IEEE Access submission shell.
+% Venue-specific IEEE Access submission source.
 % The venue-neutral scientific master remains research/manuscript/manuscript.md.
 % Do not broaden the detector-specific negative claim during migration.
 \documentclass{ieeeaccess}
-
 \usepackage{cite}
 \usepackage{amsmath,amssymb,amsfonts}
-\usepackage{algorithmic}
 \usepackage{graphicx}
 \usepackage{textcomp}
-
+\usepackage{booktabs}
 \begin{document}
-
 \history{Date of publication xxxx 00, 0000, date of current version xxxx 00, 0000.}
 \doi{10.1109/ACCESS.XXXX.XXXXXXX}
-
 \title{Failure Boundaries of a Trigger-State Q-Margin Detector Under Reward Poisoning in a Toy Tabular-RL Guidance Environment}
-
-% AUTHOR METADATA GATE: insert verified author name, affiliation, e-mail, ORCID,
-% corresponding-author marker, and biography before submission.
+% AUTHOR METADATA GATE: insert verified author, affiliation, e-mail, ORCID and biography.
 \author{AUTHOR NAME}
 \address{AFFILIATION AND ADDRESS}
 \corresp{Corresponding author: AUTHOR NAME (e-mail: EMAIL).}
-
 \begin{abstract}
 Detecting low-strength training-data corruption before obvious policy failure is an important but method-dependent problem in reinforcement learning. We evaluate a trigger-state Q-value-margin detector in an 11-state simulated guidance task trained with tabular Q-learning. The detector threshold was calibrated at poisoning strength 0.15 and frozen for a held-out sweep over 40 policy seeds per strength. At strengths 0.025, 0.050, and 0.100, frozen-threshold recall was 0.225, 0.175, and 0.25, while ROC AUC versus clean policies was 0.425, 0.425, and 0.45; the fraction of trained policies that completed the deterministic task was 1.0, 1.0, and 0.95. Detector discrimination increased at higher strengths as task completion deteriorated. These results support a narrow negative conclusion: this particular trigger-state Q-margin detector provides weak descriptive discrimination in the tested low-strength regime of this toy environment. They do not establish statistical equivalence to chance, general difficulty of detecting subtle poisoning, or impossibility of detection. The trained policy/seed, not the 200 deterministic evaluation episodes used to summarize each policy, is the relevant inferential unit.
 \end{abstract}
-
 \begin{keywords}
 adversarial reinforcement learning, reward poisoning, data poisoning, anomaly detection, Q-learning, reproducibility, negative results, evaluation methodology
 \end{keywords}
-
 \titlepgskip=-15pt
 \maketitle
 
-% IMPORTANT: migrate body text from manuscript.md without changing scientific wording.
 \section{Introduction}
-% Preserve threat-model diversity and detector-specific scope.
+Training-time attacks against reinforcement learning span materially different threat models. Prior work has studied adaptive reward poisoning, environment poisoning, attack-specific online defenses, and backdoor-style attacks designed to preserve nominal task performance while inducing targeted behavior \cite{Zhang2020,Rakhsha2020,Nika2023,Rathbun2025}. This breadth makes detector scope especially important: failure of one feature family under one poisoning mechanism cannot establish a general detectability limit.
+
+This study evaluates a deliberately simple detector with privileged access to the exact trigger states used by the poisoning process. The detector summarizes the learned policy through the mean Q-value margin at those trigger states. Rather than asking whether subtle poisoning is universally detectable or undetectable, the analysis asks how this detector behaves as poisoning strength varies in a controlled 11-state tabular-Q-learning guidance simulator under frozen-threshold evaluation.
+
+The trained policy/seed is treated as the experimental unit. Dependence induced by reusing the same held-out seeds and clean comparator across strengths is retained in interpretation, and point-estimate AUC values are not treated as evidence of chance equivalence without seed-level uncertainty. External literature establishes threat-model diversity only; it is not evidence that this repository reproduces published attacks or defenses.
+
+\subsection{Cross-repository non-conflation}
+The findings are interpreted independently of the Adaptive-Digital-Twin-Framework results. Similar vocabulary does not constitute shared mechanism, cross-domain replication, or corroboration.
 
 \section{Methods}
-% Preserve environment, calibration, held-out seeds, and inferential-unit definitions.
+\subsection{Environment and learning setup}
+The experiment uses an 11-state simulated guidance task with tabular Q-learning. The strength-sweep artifact records a clean condition and poisoning strengths 0.025, 0.050, 0.100, 0.150, 0.200, and 0.300.
+
+\subsection{Detector and calibration}
+The detector is the mean Q-value margin measured on the exact trigger states. Its threshold was calibrated at poisoning strength 0.15 using calibration seeds 0--19. The resulting threshold, 0.8445131510745894, was frozen for the sweep; no strength-specific retuning was performed.
+
+\subsection{Held-out evaluation and inferential unit}
+Held-out seeds 40--79 provide 40 trained policies per condition. For each policy, 200 deterministic episodes from the same fixed start condition summarize learned behavior. Because the policy is greedy/deterministic and evaluation contains no stochasticity, these episodes repeat the same trajectory for a fixed learned Q-table and are not 200 independent learned-policy samples. The experimental unit is the trained policy/seed. Reported mean success rate is therefore primarily the proportion of 40 learned policies that complete the deterministic task, not stochastic within-policy reliability.
+
+The same held-out seeds are reused across poisoning strengths and the same clean-policy comparator is reused in AUC calculations. Strength-specific AUC estimates are therefore correlated and are not treated as independent estimates.
+
+\subsection{Outcomes and uncertainty boundary}
+Reported detector outcomes are frozen-threshold recall and ROC AUC versus clean policies. Behavioral outcomes include deterministic task completion, mean steps, trigger wrong-way rate, and mean trigger margin. The committed JSON contains aggregate summaries for each 40-policy group. The workflow was configured to upload a per-seed CSV with time-limited retention, but that artifact has not been directly recovered in the present package. Accordingly, AUCs are descriptive point estimates and statistical equivalence to chance is not claimed. If the artifact has expired, deterministic regeneration from the frozen producing revision would be reproducibility work rather than a new scientific experiment, provided provenance is preserved.
 
 \section{Results}
-% Report aggregate point estimates as descriptive unless seed-level uncertainty is recovered.
+\subsection{Clean and low-strength conditions}
+At strength 0.000, the summary reports 40 clean policies, zero false positives, specificity 1.0, and deterministic task-completion proportion 1.0. At strength 0.025, recall was 0.225 and ROC AUC 0.425 while all 40 policies completed the task. At 0.050, recall was 0.175 and AUC 0.425 with all policies completing the task. At 0.100, recall was 0.25 and AUC 0.45 while task completion was 0.95. These estimates support only the descriptive statement that the tested detector is weak in this low-strength regime; they do not establish statistical equivalence to random discrimination.
 
-\section{Negative Results and Scope Constraints}
-% Preserve weak low-strength discrimination and all non-generalization constraints.
+\subsection{Higher-strength conditions}
+At strength 0.150, recall rose to 0.575 and AUC to 0.675 while completion fell to 0.475. At 0.200, recall and AUC were 0.80 while completion fell to 0.225. At 0.300, recall and AUC were 1.0 while no trained policy completed the task. Thus, discrimination increased as corruption became severe enough to coincide with substantial behavioral degradation; this does not establish useful pre-failure detection at high strength.
+
+\begin{table}[t]
+\centering
+\caption{Committed aggregate strength-sweep results under the audited policy-level interpretation.}
+\label{tab:sweep}
+\begin{tabular}{ccccc}
+\toprule
+Strength & Policies & Recall & AUC & Completion\\
+\midrule
+0.025 & 40 & 0.225 & 0.425 & 1.000\\
+0.050 & 40 & 0.175 & 0.425 & 1.000\\
+0.100 & 40 & 0.250 & 0.450 & 0.950\\
+0.150 & 40 & 0.575 & 0.675 & 0.475\\
+0.200 & 40 & 0.800 & 0.800 & 0.225\\
+0.300 & 40 & 1.000 & 1.000 & 0.000\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\section{Negative Result as Contribution}
+A trigger-state-privileged Q-margin detector fails to provide strong descriptive pre-failure discrimination at poisoning strengths 0.025--0.100 in the tested 11-state tabular-Q-learning environment under frozen-threshold evaluation. The result is informative because the detector is given privileged access to trigger states, but it does not imply that different detector families, learned representations, poisoning mechanisms, or richer environments must fail. Published attack and defense work uses different adversarial structures and defender assumptions \cite{Zhang2020,Rakhsha2020,Nika2023,Rathbun2025}.
 
 \section{Discussion}
-% Do not infer universal detectability limits from this detector/environment.
+\subsection{Detector-specific failure boundary}
+When policy behavior remained near the clean baseline, recall was low and AUC point estimates were below 0.5. As poisoning strength increased, detector performance improved alongside pronounced policy degradation. The result argues against presenting this Q-margin feature as a robust early-warning detector in the tested setup, not for a field-wide detectability limit.
+
+\subsection{Inferential and generalization limits}
+Forty trained policies are evaluated per strength; the 200 deterministic episodes per policy are repeated executions, not independent policy replicates. Repeated held-out seeds and the shared clean comparator induce dependence across AUC estimates. The result is confined to one small simulator, tabular Q-learning, one trigger-state Q-margin detector, one calibration procedure, the implemented poisoning design, and the documented seed population. It does not establish deployment robustness, cross-domain validity, distribution-shift persistence, attack transfer, or universal subtle-poisoning difficulty.
 
 \section{Limitations}
-% Preserve toy-environment, detector-family, seed, and dependence limitations.
+The largest current reporting limitation is the absence of directly recovered per-seed detector scores in the committed result tree. Aggregate summaries are sufficient for descriptive point estimates but not exact seed-level uncertainty around AUC. The environment is deliberately small, the detector family narrow, calibration occurs at one poisoning strength, and the same held-out seeds and clean comparator are reused across the sweep.
 
 \section{Conclusion}
-% Retain the detector- and environment-specific negative conclusion only.
+In this 11-state tabular-Q-learning guidance simulator, the tested trigger-state Q-margin detector showed weak descriptive discrimination at poisoning strengths 0.025--0.100 while deterministic task completion remained near the clean condition. Detector separation improved only as behavioral degradation became substantial. This is a reproducible detector-specific negative result, not evidence that subtle poisoning is generally impossible to detect. Retrieval or provenance-preserving deterministic regeneration of existing per-seed evidence would strengthen uncertainty reporting without changing the scientific question; broader generalization requires new prospectively specified studies.
 
 \section*{Data and Code Availability}
-The experiment implementation, tracked aggregate result summaries, research claim matrix, unit-of-analysis audit, uncertainty/reproducibility audit, manuscript source map, and figure-generation code are maintained in the associated public repository. The committed aggregate strength-sweep result is sufficient to reproduce the descriptive point estimates and publication figures. The per-seed CSV was configured for time-limited preservation by GitHub Actions; exact seed-level AUC uncertainty is therefore not claimed in the present manuscript unless that artifact is recovered or deterministically regenerated from the frozen producing revision with provenance preserved.
+The experiment implementation, aggregate result summaries, claim matrix, unit-of-analysis audit, uncertainty/reproducibility audit, manuscript source map, and figure-generation code are maintained in the associated public repository. The committed aggregate strength-sweep result reproduces descriptive point estimates and publication figures. Exact seed-level AUC uncertainty is not claimed unless the per-seed artifact is recovered or deterministically regenerated from the frozen producing revision with provenance preserved.
 
 \section*{Acknowledgment}
-OpenAI ChatGPT was used to assist with research-document organization, manuscript drafting/editing, literature-search support, and adversarial claim auditing. All scientific results originate from the repository's experimental artifacts and code, not from the AI system. Numerical values, methodological descriptions, citations, and retained interpretations were checked against primary artifacts or primary literature, and the author takes responsibility for the final manuscript.
+OpenAI ChatGPT was used to assist with research-document organization, manuscript drafting/editing, literature-search support, and adversarial claim auditing. All scientific results originate from repository experimental artifacts and code. Numerical values, methodological descriptions, citations, and retained interpretations were checked against primary artifacts or primary literature, and the author takes responsibility for the final manuscript.
 
-% AI-DISCLOSURE GATE: before submission, implement the then-current IEEE Access
-% section-level citation/disclosure requirement exactly. Do not rely on this shell alone.
-% FIGURE GATE: regenerate AUC, recall, and task-completion figures directly from the
-% committed aggregate JSON via research/manuscript/plot_strength_sweep.py.
-% INFERENCE GATE: do not add aggregate-derived CIs/p-values or independent-across-strength tests.
-
+% AI-DISCLOSURE GATE: implement current IEEE Access section-level citation/disclosure exactly.
+% FIGURE GATE: generate AUC, recall, and completion figures directly from committed JSON.
+% INFERENCE GATE: no aggregate-derived CIs/p-values or independent-across-strength tests.
+% AUTHOR/BIOGRAPHY GATE: replace placeholders only with verified submission metadata.
 \bibliographystyle{IEEEtran}
 \bibliography{references}
-
-% BIOGRAPHY GATE: add a short biography for every author below the references.
-
 \end{document}

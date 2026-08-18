@@ -1,0 +1,75 @@
+% Venue-specific IEEE Access submission shell.
+% The venue-neutral scientific master remains research/manuscript/manuscript.md.
+% Do not broaden the detector-specific negative claim during migration.
+\documentclass{ieeeaccess}
+
+\usepackage{cite}
+\usepackage{amsmath,amssymb,amsfonts}
+\usepackage{algorithmic}
+\usepackage{graphicx}
+\usepackage{textcomp}
+
+\begin{document}
+
+\history{Date of publication xxxx 00, 0000, date of current version xxxx 00, 0000.}
+\doi{10.1109/ACCESS.XXXX.XXXXXXX}
+
+\title{Failure Boundaries of a Trigger-State Q-Margin Detector Under Reward Poisoning in a Toy Tabular-RL Guidance Environment}
+
+% AUTHOR METADATA GATE: insert verified author name, affiliation, e-mail, ORCID,
+% corresponding-author marker, and biography before submission.
+\author{AUTHOR NAME}
+\address{AFFILIATION AND ADDRESS}
+\corresp{Corresponding author: AUTHOR NAME (e-mail: EMAIL).}
+
+\begin{abstract}
+Detecting low-strength training-data corruption before obvious policy failure is an important but method-dependent problem in reinforcement learning. We evaluate a trigger-state Q-value-margin detector in an 11-state simulated guidance task trained with tabular Q-learning. The detector threshold was calibrated at poisoning strength 0.15 and frozen for a held-out sweep over 40 policy seeds per strength. At strengths 0.025, 0.050, and 0.100, frozen-threshold recall was 0.225, 0.175, and 0.25, while ROC AUC versus clean policies was 0.425, 0.425, and 0.45; the fraction of trained policies that completed the deterministic task was 1.0, 1.0, and 0.95. Detector discrimination increased at higher strengths as task completion deteriorated. These results support a narrow negative conclusion: this particular trigger-state Q-margin detector provides weak descriptive discrimination in the tested low-strength regime of this toy environment. They do not establish statistical equivalence to chance, general difficulty of detecting subtle poisoning, or impossibility of detection. The trained policy/seed, not the 200 deterministic evaluation episodes used to summarize each policy, is the relevant inferential unit.
+\end{abstract}
+
+\begin{keywords}
+adversarial reinforcement learning, reward poisoning, data poisoning, anomaly detection, Q-learning, reproducibility, negative results, evaluation methodology
+\end{keywords}
+
+\titlepgskip=-15pt
+\maketitle
+
+% IMPORTANT: migrate body text from manuscript.md without changing scientific wording.
+\section{Introduction}
+% Preserve threat-model diversity and detector-specific scope.
+
+\section{Methods}
+% Preserve environment, calibration, held-out seeds, and inferential-unit definitions.
+
+\section{Results}
+% Report aggregate point estimates as descriptive unless seed-level uncertainty is recovered.
+
+\section{Negative Results and Scope Constraints}
+% Preserve weak low-strength discrimination and all non-generalization constraints.
+
+\section{Discussion}
+% Do not infer universal detectability limits from this detector/environment.
+
+\section{Limitations}
+% Preserve toy-environment, detector-family, seed, and dependence limitations.
+
+\section{Conclusion}
+% Retain the detector- and environment-specific negative conclusion only.
+
+\section*{Data and Code Availability}
+The experiment implementation, tracked aggregate result summaries, research claim matrix, unit-of-analysis audit, uncertainty/reproducibility audit, manuscript source map, and figure-generation code are maintained in the associated public repository. The committed aggregate strength-sweep result is sufficient to reproduce the descriptive point estimates and publication figures. The per-seed CSV was configured for time-limited preservation by GitHub Actions; exact seed-level AUC uncertainty is therefore not claimed in the present manuscript unless that artifact is recovered or deterministically regenerated from the frozen producing revision with provenance preserved.
+
+\section*{Acknowledgment}
+OpenAI ChatGPT was used to assist with research-document organization, manuscript drafting/editing, literature-search support, and adversarial claim auditing. All scientific results originate from the repository's experimental artifacts and code, not from the AI system. Numerical values, methodological descriptions, citations, and retained interpretations were checked against primary artifacts or primary literature, and the author takes responsibility for the final manuscript.
+
+% AI-DISCLOSURE GATE: before submission, implement the then-current IEEE Access
+% section-level citation/disclosure requirement exactly. Do not rely on this shell alone.
+% FIGURE GATE: regenerate AUC, recall, and task-completion figures directly from the
+% committed aggregate JSON via research/manuscript/plot_strength_sweep.py.
+% INFERENCE GATE: do not add aggregate-derived CIs/p-values or independent-across-strength tests.
+
+\bibliographystyle{IEEEtran}
+\bibliography{references}
+
+% BIOGRAPHY GATE: add a short biography for every author below the references.
+
+\end{document}
